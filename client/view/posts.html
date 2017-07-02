@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- our local copy of the jquery library. Normally, we'd use a CDN copy to use someone else's bandwidth -->
+            <meta charset="utf-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!-- I am including this script directly in the HTML, but usually this would be in its own file  -->
+        <script>
+            //the non-jQuery version of likeClick() looks like this:
+            function likeClickNJQ(id){
+                //create an XMLHttpRequest object
+                var xhr = new XMLHttpRequest();
+                //say we want to do a post to incrLike
+                xhr.open("POST", "incrLike", true);
+                //set up the header to say we're sending json data
+                xhr.setRequestHeader("Content-type", "application/json");
+                //define a callback to determine what we're going to do with the response
+                xhr.onreadystatechange = function () {
+                    //if things were successful
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        //parse the string data received back into JSON data
+                        var like = JSON.parse(xhr.responseText);
+                        //update the element with the count
+                        document.getElementById('like' + like.id).innerHTML = like.count;
+                    }
+                };
+                //create a string from the JSON data we want to send
+                var data = JSON.stringify({"id": id});
+                //send it
+                xhr.send(data);
+            }            
+
+            $(document).ready(function(){
+                //start a promise chain
+                Promise.resolve()
+                .then(function(){
+                    //jQuery function to request all the posts from the server
+                    //the 'return' is required. Otherwise, the subsequent then will not wait for this to complete
+                    return $.post('posts');  
+                })
+                //when the server responds, we'll execute this code
+                .then(function(posts){
+                    //jQuery function to set the innerHTML of the div with id = 'posts' to empty
+                    $('#posts').html('');
+                    //loop over each post item in the posts array
+                    posts.forEach(function(post){
+                        //jQuery function to append to the innterHTML of the div with id = 'posts'
+                        var unique_id= post._id;
+                        var html = "<div class='data_box'>";
+                            html +="            <div class='data_box_header'>";
+                            html +="        <div class='user_img'></div>";
+                            html +="        <username>nature_like</username>";
+                            html +="        <time>4h</time>";
+                            html +="    </div>";
+                            html +="    <div class='data_box_center'>";
+                            html +="        <img src='"+ post.imageUrl +"' class='img-responsive'>";
+                            html +="    </div>";
+                            html +="    <div class='data_box_comments'>";
+                            html +="        <likes id ='like" + post._id + "' >"+post.likeCount+"</likes>";
+                            html +="        <users id='usersCommnets"+unique_id+"'>";
+                                /*if(data[i].comment.userCommnet[i] == undefined || data[i].comment.userCommnet[i] == null || data[i].comment.userCommnet[i] == ' '){
+                                    }
+                                else{
+                                    html +="        <div class='particularUser'><user_name>"+data[i].comment.userCommnet[i]+"</user_name>";
+                                    html +="        <user_comment id='userCommment'> "+data[i].comment.userCommnet[i+1]+"</user_comment></div>"; 
+                                }*/
+                            html +="        </users>";
+                            html +="    </div>";
+                            html +="    <div class='add_new_comment'>";
+                            html +="        <likeBtn class='like_image_btn greyHeart' _id='"+unique_id+"' onclick='likeClick(\"" + post._id + "\",this);'></likeBtn>";
+                            html +="        <input class='add_comments_text' type='text' placeholder='Add a Comment...' _id='"+unique_id+"' onkeyup='addComment(\"" + post._id + "\",this);'>";
+                            html +="        <div class='more_options'></div>";
+                            html +="    </div>";
+                            html +="        <div class='popUp' show='close'>";
+                            html +="            <div class='popUpOption'>Report inappropriate</div>";
+                            html +="            <div class='popUpOptionCancel'>Cancel</div>";
+                            html +="        </div>"
+                            html +="</div>";
+                            
+                        $('#posts').append(html);
+                    });
+                })
+                
+                .catch(function(err){
+                    //always include a catch for exceptions
+                    console.log(err);
+                });
+                
+                
+            });
+            //handle a click on the LIKE button we've included with each post
+            //we receive the ID of the post as a parameter
+            function likeClick(id,e){console.log(e)
+                if($(e).hasClass("greyHeart")){
+                    $(e).removeClass("greyHeart").addClass("redHeart");
+                    Promise.resolve()
+                    .then(function(){
+                        //jQuery provides a nice convenience method for easily sending a post with parameters in JSON
+                        //here we pass the ID to the incrLike route on the server side so it can do the incrementing for us
+                        //note the return. This MUST be here, or the subsequent then will not wait for this to complete
+                        return $.post('incrLike', {id : id});
+                    })
+                    .then(function(like){
+                        //jQuery provides a nice convenience methot for easily setting the count to the value returned
+                        $('#like' + like.id).html(like.count);
+                    })
+                    .catch(function(err){
+                        //always include a catch for the promise chain
+                        console.log(err);
+                    });
+                    
+                }
+                else{
+                    
+                    $(e).removeClass("redHeart").addClass("greyHeart");
+                    Promise.resolve()
+                    .then(function(){
+                        //jQuery provides a nice convenience method for easily sending a post with parameters in JSON
+                        //here we pass the ID to the incrLike route on the server side so it can do the incrementing for us
+                        //note the return. This MUST be here, or the subsequent then will not wait for this to complete
+                        return $.post('decrLike', {id : id});
+                    })
+                    .then(function(like){
+                        //jQuery provides a nice convenience methot for easily setting the count to the value returned
+                        $('#like' + like.id).html(like.count);
+                    })
+                    .catch(function(err){
+                        //always include a catch for the promise chain
+                        console.log(err);
+                    });
+                   
+                }
+                
+            }
+            
+            function addComment(id,e){
+                console.log(e)
+                var commentByUser = $(e).val();
+                
+            }
+            
+        </script>
+    </head>
+    <!-- add the onload event handler to the body tag -->
+    <body>
+        <div class="backDrop"></div>
+    
+    <div class="container-fluid insta_header">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4 text-center">
+                    <div class="header_logo"></div>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <input typ="text" class="search_insta text-center" placeholder="Search">
+                </div>
+                <div class="col-sm-4 text-center">
+                    <div class="nav_menu_insta">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="nav_options navigation_icon"></div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="nav_options heart_icon"></div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="nav_options user_icon"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- create a div with an id to give us an anchor point to let the javascript do its work -->
+        <div id="posts"></div>
+    </body>
+</html>
