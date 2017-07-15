@@ -2,11 +2,16 @@
 <html lang="en">
     <head>
         <!-- our local copy of the jquery library. Normally, we'd use a CDN copy to use someone else's bandwidth -->
-            <meta charset="utf-8"/>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <!--Default Addresee -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <scrit src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <scrpt src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>                
+        
+        <!--Style Sheet -->
+        <link rel="stylesheet" href="/client/css/style.css">
+        
         <!-- I am including this script directly in the HTML, but usually this would be in its own file  -->
         <script>
             //the non-jQuery version of likeClick() looks like this:
@@ -49,38 +54,33 @@
                     posts.forEach(function(post){
                         //jQuery function to append to the innterHTML of the div with id = 'posts'
                         var unique_id= post._id;
-                        var html = "<div class='data_box'>";
-                            html +="            <div class='data_box_header'>";
-                            html +="        <div class='user_img'></div>";
-                            html +="        <username>nature_like</username>";
-                            html +="        <time>4h</time>";
-                            html +="    </div>";
-                            html +="    <div class='data_box_center'>";
-                            html +="        <img src='"+ post.imageUrl +"' class='img-responsive'>";
-                            html +="    </div>";
-                            html +="    <div class='data_box_comments'>";
-                            html +="        <likes id ='like" + post._id + "' >"+post.likeCount+"</likes>";
-                            html +="        <users id='usersCommnets"+unique_id+"'>";
-                                /*if(data[i].comment.userCommnet[i] == undefined || data[i].comment.userCommnet[i] == null || data[i].comment.userCommnet[i] == ' '){
-                                    }
-                                else{
-                                    html +="        <div class='particularUser'><user_name>"+data[i].comment.userCommnet[i]+"</user_name>";
-                                    html +="        <user_comment id='userCommment'> "+data[i].comment.userCommnet[i+1]+"</user_comment></div>"; 
-                                }*/
-                            html +="        </users>";
-                            html +="    </div>";
-                            html +="    <div class='add_new_comment'>";
-                            html +="        <likeBtn class='like_image_btn greyHeart' _id='"+unique_id+"' onclick='likeClick(\"" + post._id + "\",this);'></likeBtn>";
-                            html +="        <input class='add_comments_text' type='text' placeholder='Add a Comment...' _id='"+unique_id+"' onkeyup='addComment(\"" + post._id + "\",this);'>";
-                            html +="        <div class='more_options'></div>";
-                            html +="    </div>";
-                            html +="        <div class='popUp' show='close'>";
-                            html +="            <div class='popUpOption'>Report inappropriate</div>";
-                            html +="            <div class='popUpOptionCancel'>Cancel</div>";
-                            html +="        </div>"
-                            html +="</div>";
-                            
-                        $('#posts').append(html);
+                        var html ="    <div class='container full'>";
+                            html +="        <div class='row'>";
+                            html +="            <div class='col-xs-2 col-sm-2 userimg'>";
+                            html +="                <img src='"+ post.imageUrl +"' id='fb' class='img-responsive'>";
+                            html +="            </div>";
+                            html +="        <div class='col-xs-6 col-sm-6 username'>";
+                            html +="                <h3>ashmeet_singh</h3>";
+                            html +="        </div>";
+                            html +="        <div class='col-xs-4 col-sm-4 time'>";
+                            html +="                <h4>4hr</h4>";
+                            html +="        </div>";
+                            html +="        <div class='col-sm-12 text-center'>";
+                            html +="                <img src='"+ post.imageUrl +"' class='img-responsive'>";
+                            html +="        </div>";
+                            html +="        <div class='col-xs-12 col-sm-12'>";
+                            html +="            <div class='row'>";
+                            html +="                <div class='col-xs-2 col-sm-1'><img src='"+ post.imageUrl +"' class='img-responsive'></div>";
+                            html +="                <div class='col-xs-2 col-sm-1'><img src='"+ post.imageUrl +"' class='img-responsive'></div>";
+                            html +="        </div>";
+                            html +="                <div class='col-xs-12 col-sm-12'>";
+                            html +="                            <input type='text' name='FirstName' value='Add a comment' id='comt'>";
+                            html +="                </div>";
+                            html +="                </div>";
+                            html +="            </div>";
+                            html +="        </div>";
+                        
+                    $('#posts').append(html);
                     });
                 })
                 
@@ -88,8 +88,6 @@
                     //always include a catch for exceptions
                     console.log(err);
                 });
-                
-                
             });
             //handle a click on the LIKE button we've included with each post
             //we receive the ID of the post as a parameter
@@ -146,36 +144,49 @@
     </head>
     <!-- add the onload event handler to the body tag -->
     <body>
-        <div class="backDrop"></div>
-    
-    <div class="container-fluid insta_header">
         <div class="container">
+        <div class="row top">
+            <div class="col-xs-1 col-sm-1 p">
+                <img src="/client/img/capture.JPG">
+            </div>
+        <div class="col-xs-4 col-sm-4">
+                <img src="/client/img/instalogo.jpg" id="insta">
+            </div>
+            
+            <div class="col-xs-3 col-sm-3 serch">
+                <input type="text" name="FirstName" value="Search">
+            </div>
+            
+            <div class="col-xs-4 col-sm-4 col-md-4">
+                <img src="/client/img/top1.JPG">
+                <img src="/client/img/top2.JPG">
+                <img src="/client/img/top3.JPG">
+                
+            </div>
+      </div>   
+    </div>
+    <hr id="line">
+        <!-- create a div with an id to give us an anchor point to let the javascript do its work -->
+        <div id="posts"></div>
+         <hr id="line">
+        <div class="container last">
             <div class="row">
-                <div class="col-sm-4 text-center">
-                    <div class="header_logo"></div>
+                <div class="col-xs-1 col-sm-1 home">
+                    <img src="/client/img/home.JPG"     class="img-responsive">
+                </div>    
+                <div class="col-xs-3 col-sm-3 home">    
+                    <img src="/client/img/search.JPG"    class="img-responsive">
+                </div>    
+                <div class="col-xs-3 col-sm-3 home">
+                    <img src="/client/img/capture.JPG"   class="img-responsive">
                 </div>
-                <div class="col-sm-4 text-center">
-                    <input typ="text" class="search_insta text-center" placeholder="Search">
+                <div class="col-xs-3 col-sm-3 home">    
+                    <img src="/client/img/like.JPG"      class="img-responsive">  
                 </div>
-                <div class="col-sm-4 text-center">
-                    <div class="nav_menu_insta">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="nav_options navigation_icon"></div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="nav_options heart_icon"></div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="nav_options user_icon"></div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-xs-2 col-sm-2 home">    
+                    <img src="/client/img/profile.JPG"   class="img-responsive">
                 </div>
             </div>
         </div>
-    </div>
-        <!-- create a div with an id to give us an anchor point to let the javascript do its work -->
-        <div id="posts"></div>
     </body>
 </html>

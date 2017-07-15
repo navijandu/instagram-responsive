@@ -1,0 +1,100 @@
+#line{
+    border-top: 1px solid lightgray;
+    overflow: hidden;
+    top: 25px;
+    width: 100%;
+}
+.serch{
+    
+}
+#insta{
+    margin-left: 10px;
+    height: 40px;
+    width: 100px;
+    
+}
+.cap
+{
+    
+}
+#fb{
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+.comt{
+    border: 1px solid red;
+    background-image:url(images/option.JPG);
+    background-repeat: no-repeat;
+    background-position: right;
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-left: -15px;
+    border-style:outset;
+    background-color: #fff;
+    border-width:0px 0px 0px 0px;
+    box-shadow: 0px 0px 0.5px #888888;
+    border-radius: 0px 0px 0px 0px;
+
+}
+.as{
+    margin-top: 100px;
+}
+.full{
+    height: auto;
+    width: 70%;
+    align-content: center;
+    display: block;
+    margin-top: 30px;
+    box-shadow: 0px 0px 0.2px #888888;
+    align-items: stretch;
+}
+.top{
+        margin-top: 15px;
+        overflow: hidden;
+        background-color:white;
+        width: 100%;
+
+}
+.userimg{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: auto;
+    width: auto;
+
+}
+.username{
+    
+    margin-top: 10px;
+    margin-left: 0px;
+    height: auto;
+    width: auto;
+    
+}
+.time{
+    float: right;
+    text-align-last: right;
+}
+.last{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.home{
+    height: 80px;
+    width: 80px;
+    margin-left: 100px;
+}
+.sap{
+    border: 1px solid black;
+    margin-top: 5px;
+}
+.bottom{
+    border: 1px solid black;
+    margin-top: 20px;
+
+}
+.ab{
+    float: left;
+    text-decoration: underline;
+}

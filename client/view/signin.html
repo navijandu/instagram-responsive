@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- our local copy of the jquery library. Normally, we'd use a CDN copy to use someone else's bandwidth -->
+        
+        <!--Default Addresee -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <scrit src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <scrpt src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>                
+        
+        <!--Style Sheet -->
+        <link rel="stylesheet" href="/client/css/style.css">
+        
+        <!-- I am including this script directly in the HTML, but usually this would be in its own file  -->
+        <script>
+            /*global $*/
+            function handleSigninAttempt(){
+                var email = $('#email').val();
+                var password = $('#password').val();
+                
+                if (email.length > 0 && password.length > 0){
+                    Promise.resolve()
+                    .then(function(){
+                        return $.post('signin', 'username=' + email + '&password=' + password);
+                    })
+                    .then(function(auth){
+                        if (auth.isValid){
+                            $('#error').text = '';
+                            window.location.replace('posts');
+                        } else {
+                            $('#error').html(auth.message);
+                            $('#email').html('');
+                            $('#password').html('');
+                        }
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    })
+                } else {
+                    $('#error').html('Please provide both username and password');
+                }
+            }
+
+        </script>
+    </head>
+    <!-- add the onload event handler to the body tag -->
+    <body>
+        <div class="container form-group-out ">
+        <div class="row">
+            
+            <div class="col-sm-6 col-sm-offset-3">
+                <h1>Sign in</h1>
+            
+                <div class="form-group">
+                    <input type="text" name="email" id="email" class="form-control" placeholder="Email" required autofocus/>
+				</div>
+            
+                <div class="form-group">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Password" required/>
+				</div>
+
+                <div class="form-group">
+                    <button class="btn btn-lg btn-primary" onclick="handleSigninAttempt()">Sign in</button>
+				</div>
+                
+                <a href="/client/view/join.html" class="text-center">Create an account</a></br>
+                <a href="/client/view//passwordreset.html" class="text-center">I forgot my password</a>
+                <p id="error"></p>
+            </div>
+        </div>
+        </div>
+    </body>
+</html>

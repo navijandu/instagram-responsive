@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 
 //we're building a POST object model in mongoose that we'll use elsewhere
-module.exports = mongoose.model('Post', {
+module.exports = mongoose.model('User', {
     email: String,
     password: String //this will be the hashed value of the password
 });
