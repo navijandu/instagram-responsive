@@ -47,15 +47,15 @@
     align-content: center;
     display: block;
     margin-top: 30px;
-    box-shadow: 0px 0px 0.2px #888888;
+    box-shadow: 0px 0px 0.3px #888888;
     align-items: stretch;
 }
 .top{
         margin-top: 15px;
-        overflow: hidden;
         background-color:white;
         width: 100%;
-
+    
+      
 }
 .userimg{
     margin-top: 10px;
@@ -70,20 +70,17 @@
     margin-left: 0px;
     height: auto;
     width: auto;
-    
 }
 .time{
     float: right;
     text-align-last: right;
 }
-.last{
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
+
 .home{
-    height: 80px;
-    width: 80px;
+    height: 60px;
+    width: 60px;
     margin-left: 100px;
+    
 }
 .sap{
     border: 1px solid black;
@@ -97,4 +94,89 @@
 .ab{
     float: left;
     text-decoration: underline;
+}
+.form3{
+    width: 700px;
+    height: auto;
+    margin-left: 200px;
+    margin-top: 4px;
+    box-shadow: 1px 10px 16px #888888;
+    
+}
+#ttl{
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    margin-top: 5px;
+    margin-left: 20px;
+    border-radius: 50%;
+}
+#mn{
+    display: inline-block;
+    float: right;
+    width: 35px;
+    height: 35px;
+    margin-left:100px;
+    margin-top:10px;
+    
+}
+#lp{
+    height: 25px;
+    width: 30px;
+    margin-left: 0px;
+    margin-top: 5px;
+}
+#comt{
+    height: 25px;
+    width: 30px;
+}
+#dr{
+    display:inline-block;
+    height: 25px;
+    width: 30px;
+}    
+#tag{
+    display:inline-block;
+    height: 25px;
+    width: 25px;
+    float: right;
+    margin-right: 20px;
+}
+#text{
+    margin-top: 0px;
+}
+.form6{
+    width: auto;
+    height: auto;
+    margin-left: 10px;
+    margin-bottom: 50px;
+}
+#dog{
+    display: inline-block;
+    height: 500px;
+    width: 650px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.comtbox{
+    
+    background-image:url(images/option.JPG);
+    background-repeat: no-repeat;
+    background-position: right;
+    width: 95%;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-left: 5px;
+    border-style:outset;
+    background-color: #fff;
+    box-shadow: 0px 0px 0.5px #888888;
+}
+.a{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.last{
+    
 }

@@ -10,10 +10,36 @@
         <scrpt src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>                
         
         <!--Style Sheet -->
-        <link rel="stylesheet" href="/client/css/style.css">
-        
+        <link rel="stylesheet" href="css/style.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
         <!-- I am including this script directly in the HTML, but usually this would be in its own file  -->
         <script>
+            /*global $*/
+            //handle a click on the LIKE button we've included with each post
+            //we receive the ID of the post as a parameter
+            function likeClick(id){
+                Promise.resolve()
+                .then(function(){
+                    //jQuery provides a nice convenience method for easily sending a post with parameters in JSON
+                    //here we pass the ID to the incrLike route on the server side so it can do the incrementing for us
+                    //note the return. This MUST be here, or the subsequent then will not wait for this to complete
+                    
+                    return $.post('incrLike', {id : id});
+                })
+                .then(function(like){
+                    
+                    //if (like.count > 0)
+                    
+                        //jQuery provides a nice convenience methot for easily setting the count to the value returned
+                        $('#like' + like.id).html(like.count);
+                })
+                .catch(function(err){
+                    //always include a catch for the promise chain
+                    console.log(err);
+                });
+            }
+            
             //the non-jQuery version of likeClick() looks like this:
             function likeClickNJQ(id){
                 //create an XMLHttpRequest object
@@ -38,7 +64,8 @@
                 xhr.send(data);
             }            
 
-            $(document).ready(function(){
+            //onLoad function, to be executed when page is completed loaded by browser
+            function onload(){
                 //start a promise chain
                 Promise.resolve()
                 .then(function(){
@@ -52,105 +79,95 @@
                     $('#posts').html('');
                     //loop over each post item in the posts array
                     posts.forEach(function(post){
-                        //jQuery function to append to the innterHTML of the div with id = 'posts'
-                        var unique_id= post._id;
-                        var html ="    <div class='container full'>";
-                            html +="        <div class='row'>";
-                            html +="            <div class='col-xs-2 col-sm-2 userimg'>";
-                            html +="                <img src='"+ post.imageUrl +"' id='fb' class='img-responsive'>";
-                            html +="            </div>";
-                            html +="        <div class='col-xs-6 col-sm-6 username'>";
-                            html +="                <h3>ashmeet_singh</h3>";
-                            html +="        </div>";
-                            html +="        <div class='col-xs-4 col-sm-4 time'>";
-                            html +="                <h4>4hr</h4>";
-                            html +="        </div>";
-                            html +="        <div class='col-sm-12 text-center'>";
-                            html +="                <img src='"+ post.imageUrl +"' class='img-responsive'>";
-                            html +="        </div>";
-                            html +="        <div class='col-xs-12 col-sm-12'>";
-                            html +="            <div class='row'>";
-                            html +="                <div class='col-xs-2 col-sm-1'><img src='"+ post.imageUrl +"' class='img-responsive'></div>";
-                            html +="                <div class='col-xs-2 col-sm-1'><img src='"+ post.imageUrl +"' class='img-responsive'></div>";
-                            html +="        </div>";
-                            html +="                <div class='col-xs-12 col-sm-12'>";
-                            html +="                            <input type='text' name='FirstName' value='Add a comment' id='comt'>";
-                            html +="                </div>";
-                            html +="                </div>";
-                            html +="            </div>";
-                            html +="        </div>";
+                        var likeString = '';
+                        if (post.isLiked)
+                            likeString = 'I liked this';
+ //jQuery function to append to the innterHTML of the div with id = 'posts'
                         
-                    $('#posts').append(html);
+                        var html =  '<div class="container full">';
+                            html +='    <div class="row">';
+                            html +='        <div class="col-sm-3 col-xs-3 userimg">';
+                            html +='            <img src="img/fb.jpg" id="fb" class="img-responsive">';
+                            html +='        </div>';
+                            html +='        <div class="col-xs-5 col-sm-5 col-xs-5 username">';
+                            html +='            <h3>ashmeet_singh</h3>';
+                            html +='        </div>';
+                            html +='        <div class="col-xs-4 col-sm-4 time">';
+                            html +='            <h4>4hr</h4>';
+                            html +='        </div>';
+                            html +='    <div class="col-sm-12 text-center">';
+                            html +='        <img src="'+post.image+'" class="img-responsive">';
+                            html +='    </div>';
+                            html +='    <div class="col-xs-12 col-sm-12 col-md-12">';
+                            html +='        <div class="row">';
+                            html +="            <likes id ='like" + post._id + "'>"+post.likeCount+"</likes>";
+                            html +='    <div class="col-xs-2 col-sm-2 col-md-2">';
+                            html +='        <img src="img/likepic.JPG" class="img-responsive" onclick="likeClick(\'' + post._id + '\');">';
+                            html +='    </div>';
+                            html +='    <div class="col-xs-2 col-sm-2 col-md-2">';
+                            html +='        <img src="img/comment.JPG" class="img-responsive">';
+                            html +='    </div>';
+                            html +='    </div>';
+                            html +='<div>';
+                            html +='    <ul class="a">';
+                            html +='  <li><b>nadine_locallux</b> Nice Click Bro .. Keep it up ..</li>';
+                            html +='  <li><b>Nav-</b>Very awosam ghaint </li>';
+                            html +='    </ul>';
+                            html +='    </div>';
+                            html +='        <div class="col-xs-12 col-sm-12 ">';
+                            html +='            <input type="text" name="FirstName" value="Add a comment" class="comt">';
+                            html +='        </div>';
+                            html +='    </div>';
+                            html +='</div>';
+                            html +='</div>';
+                       
+        
+                    /*var html ='<div class="form3">';
+                        html +='<img src="img/fb.jpg" id="ttl">';
+                        html +='<img src="img/menu.JPG" id="mn">';
+            
+                        html +='<div class="form6">'; 
+                        html +='    <img src="'+post.image+'" id="dog">';
+                        html +='</div>';
+                        html +='<div class="like-counter">';
+                        html +="    <likes id ='like" + post._id + "'>"+post.likeCount+"</likes>";
+                        html +='</div>';
+                        html +='    <img src="img/likepic.JPG" id="lp" onclick="likeClick(\'' + post._id + '\');">';
+                        html +='    <img src="img/comment.JPG" id="comt">';
+                        html +='    <img src="img/dr.JPG" id="dr">';
+                        html +='    <img src="img/tag.JPG" id="tag">';
+                        html +='    <img src="" id="text">';
+                        html +='<div>';
+                        html +='    <ul class="a">';
+                        html +='  <li><b>nadine_locallux</b> Im already missing these monkeys more than words! #missyouguys #roadtrip #eastcoast #seeyousoon</li>';
+                        html +='  <li><b>Nav-</b>nice click bro </li>';
+                        
+                        html +='</ul>';
+                        html +='</div>';
+                        html +='    <textarea aria-label="Add a comment…" class="comtbox" placeholder="Add a comment…" style="height: 18px;"></textarea>';
+                        html +='  </div>';*/
+                            
+                        $('#posts').append(html);
                     });
                 })
-                
                 .catch(function(err){
                     //always include a catch for exceptions
                     console.log(err);
                 });
-            });
-            //handle a click on the LIKE button we've included with each post
-            //we receive the ID of the post as a parameter
-            function likeClick(id,e){console.log(e)
-                if($(e).hasClass("greyHeart")){
-                    $(e).removeClass("greyHeart").addClass("redHeart");
-                    Promise.resolve()
-                    .then(function(){
-                        //jQuery provides a nice convenience method for easily sending a post with parameters in JSON
-                        //here we pass the ID to the incrLike route on the server side so it can do the incrementing for us
-                        //note the return. This MUST be here, or the subsequent then will not wait for this to complete
-                        return $.post('incrLike', {id : id});
-                    })
-                    .then(function(like){
-                        //jQuery provides a nice convenience methot for easily setting the count to the value returned
-                        $('#like' + like.id).html(like.count);
-                    })
-                    .catch(function(err){
-                        //always include a catch for the promise chain
-                        console.log(err);
-                    });
-                    
-                }
-                else{
-                    
-                    $(e).removeClass("redHeart").addClass("greyHeart");
-                    Promise.resolve()
-                    .then(function(){
-                        //jQuery provides a nice convenience method for easily sending a post with parameters in JSON
-                        //here we pass the ID to the incrLike route on the server side so it can do the incrementing for us
-                        //note the return. This MUST be here, or the subsequent then will not wait for this to complete
-                        return $.post('decrLike', {id : id});
-                    })
-                    .then(function(like){
-                        //jQuery provides a nice convenience methot for easily setting the count to the value returned
-                        $('#like' + like.id).html(like.count);
-                    })
-                    .catch(function(err){
-                        //always include a catch for the promise chain
-                        console.log(err);
-                    });
-                   
-                }
-                
             }
-            
-            function addComment(id,e){
-                console.log(e)
-                var commentByUser = $(e).val();
-                
-            }
-            
         </script>
     </head>
     <!-- add the onload event handler to the body tag -->
-    <body>
-        <div class="container">
+    <body onload="onload();">
+    <div class="container">
         <div class="row top">
-            <div class="col-xs-1 col-sm-1 p">
-                <img src="/client/img/capture.JPG">
+            <div class="col-xs-1 col-sm-1 ">
+                <img src="img/capture.JPG">
             </div>
-        <div class="col-xs-4 col-sm-4">
-                <img src="/client/img/instalogo.jpg" id="insta">
+            <div class="col-xs-1 col-sm-1 col-xs-1" style="background: white; height: 35px; border-left: 1px solid #6b6c6d">
+            </div>
+        <div class="col-xs-3 col-sm-3">
+                <img src="img/instalogo.jpg" id="insta">
             </div>
             
             <div class="col-xs-3 col-sm-3 serch">
@@ -158,9 +175,9 @@
             </div>
             
             <div class="col-xs-4 col-sm-4 col-md-4">
-                <img src="/client/img/top1.JPG">
-                <img src="/client/img/top2.JPG">
-                <img src="/client/img/top3.JPG">
+                <img src="img/top1.JPG">
+                <img src="img/top2.JPG">
+                <img src="img/top3.JPG">
                 
             </div>
       </div>   
@@ -168,25 +185,26 @@
     <hr id="line">
         <!-- create a div with an id to give us an anchor point to let the javascript do its work -->
         <div id="posts"></div>
-         <hr id="line">
+        <hr id="line">
         <div class="container last">
             <div class="row">
-                <div class="col-xs-1 col-sm-1 home">
-                    <img src="/client/img/home.JPG"     class="img-responsive">
+                <div class="col-xs-1 col-sm-1 col-md-1 home">
+                    <img src="img/home.JPG"     class="img-responsive">
                 </div>    
-                <div class="col-xs-3 col-sm-3 home">    
-                    <img src="/client/img/search.JPG"    class="img-responsive">
+                <div class="col-xs-3 col-sm-3 col-md-3 home">    
+                    <img src="img/search.JPG"    class="img-responsive">
                 </div>    
-                <div class="col-xs-3 col-sm-3 home">
-                    <img src="/client/img/capture.JPG"   class="img-responsive">
+                <div class="col-xs-3 col-sm-3 col-md-3 home">
+                    <img src="img/capture.JPG"   class="img-responsive">
                 </div>
-                <div class="col-xs-3 col-sm-3 home">    
-                    <img src="/client/img/like.JPG"      class="img-responsive">  
+                <div class="col-xs-3 col-sm-3 col-md-3 home">    
+                    <img src="img/like.JPG"      class="img-responsive">  
                 </div>
-                <div class="col-xs-2 col-sm-2 home">    
-                    <img src="/client/img/profile.JPG"   class="img-responsive">
+                <div class="col-xs-2 col-sm-2 col-md-2 home">    
+                    <img src="img/profile.JPG"   class="img-responsive">
                 </div>
             </div>
         </div>
+        
     </body>
 </html>

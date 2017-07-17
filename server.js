@@ -1,4 +1,7 @@
-// by Ashmeet Singh
+  //
+// # SimplestServer
+//
+// by Rick Kozak
 
 const dbUrl ='mongodb://ashmeet:navi@ds145302.mlab.com:45302/instagram-responsive';
 
@@ -18,12 +21,14 @@ const hash = require('./utils/hash.js');
 const mongoose = require('mongoose');
 const Post = require('./models/Post.js');
 const User = require('./models/User.js');
-const PasswordReset = require('./models/PasswordReset.js');
+const Like = require('./models/Like.js');
+const PasswordReset = require('./models/PasswordReset.js'); 
 //sendmail
 const email = require('./utils/sendmail.js');
 
 //email.send('prog8165@gmail.com', 'test', 'this is a test');
 
+//
 // ## SimpleServer `SimpleServer(obj)`
 //
 // Creates a new instance of SimpleServer with the following options:
@@ -34,9 +39,7 @@ var server = http.createServer(router);
 
 //establish connection to our mongodb instance
 //use your own mongodb instance here
-
-mongoose.connect('mongodb://ashmeet:navi@ds145302.mlab.com:45302/instagram-responsive');
-
+mongoose.connect(dbUrl);
 //create a sessions collection as well
 var mongoSessionStore = new mongoSession({
     uri: dbUrl,
@@ -64,7 +67,8 @@ userAuth.init(passport);
 router.get('/', function(req, res){
   console.log('client requests root');
   //use sendfile to send our signin.html file
-  res.sendFile(path.join(__dirname, 'client/view','signin.html'));
+  res.sendfile(path.join(__dirname, 'client/view','signin.html'));
+  //res.sendFile(path.join(__dirname, 'client/view','signin.html'));
 });
 
 //tell the router how to handle a get request to the signin page
@@ -98,7 +102,8 @@ router.post('/signin', function(req, res, next) {
 //tell the router how to handle a get request to the join page
 router.get('/join', function(req, res){
   console.log('client requests join');
-  res.sendFile(path.join(__dirname, 'client/view', 'join.html'));
+  res.sendfile(path.join(__dirname, 'client/view','join.html'));
+  //CN-- res.sendFile(path.join(__dirname, 'client/view', 'join.html'));
 });
 
 //tell the router how to handle a post request to the join page
@@ -175,7 +180,8 @@ router.get('/verifypassword', function(req, res){
 router.get('/posts', userAuth.isAuthenticated, function(req, res){
   console.log('client requests posts.html');
   //use sendfile to send our posts.html file
-  res.sendFile(path.join(__dirname, 'client/view','posts.html'));
+  res.sendfile(path.join(__dirname, 'client/view','posts.html'));
+  // CN ---res.sendFile(path.join(__dirname, 'client/view','posts.html'));
 })
 
 //tell the router how to handle a post request to /posts
@@ -183,35 +189,62 @@ router.get('/posts', userAuth.isAuthenticated, function(req, res){
 router.post('/posts', userAuth.isAuthenticated, function(req, res){
   console.log('client requests posts list');
   
+  var thesePosts;
   //go find all the posts in the database
   Post.find({})
-  .then(function(paths){
+  .then(function(posts){
+    thesePosts = posts;
+    var promises = [];
+    thesePosts.forEach(function(post){
+      promises.push(
+        Promise.resolve()
+        .then(function(){
+          return Like.findOne({userId: req.user.id, postId: post.id})
+        })
+        .then(function(like){
+          post._doc.isLiked = like ? true : false;
+      }));
+    });
+    return Promise.all(promises);
+  })
+  .then(function(){
     //send them to the client in JSON format
-    res.json(paths);
+    res.json(thesePosts);
   })
 });
 
 //tell the router how to handle a post request to /incrLike
 router.post('/incrLike', userAuth.isAuthenticated, function(req, res){
-  console.log('increment like for ' + req.body.id+'by user' +req.user.email);
+  console.log('increment like for ' + req.body.id + ' by user ' + req.user.email);
 
-  //go get the post record
-  Post.findById(req.body.id)
-  .then(function(post){
-    //increment the like count
-    post.likeCount++;
-    //save the record back to the database
-    return post.save(post);
-  })
-  .then(function(post){
-    //a successful save returns back the updated object
-    res.json({id: req.body.id, count: post.likeCount});  
+  Like.findOne({userId: req.user.id, postId: req.body.id})
+  .then(function(like){
+    //if (!like){
+      //go get the post record
+      Post.findById(req.body.id)
+      .then(function(post){
+        //increment the like count
+        post.likeCount++;
+        //save the record back to the database
+        return post.save(post);
+      })
+      .then(function(post){
+        var like = new Like();
+        like.userId = req.user.id;
+        like.postId = req.body.id;
+        like.save();
+        
+        //a successful save returns back the updated object
+        res.json({id: req.body.id, count: post.likeCount});  
+      })
+    //} else {
+      //  res.json({id: req.body.id, count: -1});  
+    //}
   })
   .catch(function(err){
     console.log(err);
   })
 });
-
 //set up the HTTP server and start it running
 server.listen(process.env.PORT || 3000, process.env.IP || '0.0.0.0', function(){
   var addr = server.address();
