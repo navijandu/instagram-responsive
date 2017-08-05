@@ -11,7 +11,7 @@
         <scrpt src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>                
         
         <!--Style Sheet -->
-        <link rel="stylesheet" href="/client/css/style.css">
+        <link rel="stylesheet" href="/css/style.css">
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <!-- I am including this script directly in the HTML, but usually this would be in its own file  -->
@@ -49,9 +49,18 @@
     <!-- add the onload event handler to the body tag -->
     <body>
         <div class="container form-group-out ">
-        <div class="row">
+        <div class="row col-sm-5 col-sm-offset-1 signinfull">
             
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-4 col-sm-offset-8 head">
+				<img src="/img/instalogo.jpg" width="240px" height="90px" class="img-responsive"></img></div>
+			<div class="col-sm-5 col-sm-offset-8 con">
+				<h4>Sigh Up for photos and videos<br> from your friends.</h4></div>
+			<div class="col-sm-4 col-sm-offset-8">
+			     <a href="/join" class="text-center">
+                    <button class="btn btn-lg btn-primary">Sign Up for New Account</button>
+				</a>
+			</div>
+    <div class="col-sm-4 col-sm-offset-8">
                 <h1>Sign in</h1>
             
                 <div class="form-group">
@@ -66,10 +75,29 @@
                     <button class="btn btn-lg btn-primary" onclick="handleSigninAttempt()">Sign in</button>
 				</div>
                 
-                <a href="/join" class="text-center">Create an account</a></br>
-                <a href="/client/view//passwordreset.html" class="text-center">I forgot my password</a>
+                <a href="/passwordreset" class="text-center">I forgot my password</a>
                 <p id="error"></p>
-            </div>
+        
+
+    </div>
+    </div>
+</div>
+<div class="col-md-12 form-3">
+    <h6><strong>Get the app.</strong></h6>
+
+    <div class="form-4">																									
+        <a href="https://play.google.com/store/apps/details?id=com.instagram.android&referrer=utm_source%3Dinstagramweb%26utm_campaign%3DunifiedHome%26utm_medium%3Dbadge">
+        <img src="/img/logoapp.JPG"  class="img-responsive"></img>
+        </a>
+    </div>
+</div>
+<div class="container">
+<div row>
+<div class="col-md-10 form-5">																									<!form-5>
+		<h6>About Us &nbsp&nbsp&nbsp &nbsp Support &nbsp &nbsp &nbsp &nbsp Blog&nbsp &nbsp &nbsp &nbsp Press&nbsp &nbsp &nbsp &nbsp
+		 &nbsp Privacy &nbsp &nbsp &nbsp &nbsp Terms&nbsp &nbsp &nbsp &nbsp Directory&nbsp &nbsp &nbsp Language&nbsp &nbsp &nbsp&nbsp &nbsp&nbsp &nbsp 2017 INSTAGRAM</h6>
+        </div>
+        </div>
         </div>
         </div>
     </body>

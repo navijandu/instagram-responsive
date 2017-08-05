@@ -1,20 +1,26 @@
-#line{
+#linetop{
     border-top: 1px solid lightgray;
     overflow: hidden;
     top: 25px;
     width: 100%;
 }
-.serch{
-    
+#linelast{
+    border-top: 1px solid lightgray;
+    overflow: hidden;
+    margin-bottom:  3%;
+    width: 100%;
 }
+
 #insta{
-    margin-left: 10px;
+    float: left;
+    margin-left: -20px;
     height: 40px;
     width: 100px;
     
+    
 }
-.cap
-{
+.serch{
+    width: 18%;
     
 }
 #fb{
@@ -23,20 +29,13 @@
     width: 40px;
 }
 .comt{
-    border: 1px solid red;
-    background-image:url(images/option.JPG);
-    background-repeat: no-repeat;
-    background-position: right;
-    width: 100%;
-    margin-bottom: 10px;
-    margin-top: 15px;
-    margin-left: -15px;
+    width: 80%;
+    margin-bottom: 5%;
+    margin-top: 5%;
+    margin-left: -2%;
     border-style:outset;
     background-color: #fff;
     border-width:0px 0px 0px 0px;
-    box-shadow: 0px 0px 0.5px #888888;
-    border-radius: 0px 0px 0px 0px;
-
 }
 .as{
     margin-top: 100px;
@@ -51,35 +50,40 @@
     align-items: stretch;
 }
 .top{
-        margin-top: 15px;
-        background-color:white;
+        
+        background-color: white;
+        margin-top: 2%;
         width: 100%;
-    
-      
+}
+.last {
+    position: fixed;
+    bottom: 0;
+    overflow: hidden;
+    background-color: #ffffff;
+    width: 100%;
+    height: 5%;
 }
 .userimg{
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 1%;
+    margin-bottom: 1%;
     height: auto;
     width: auto;
-
 }
 .username{
     
-    margin-top: 10px;
-    margin-left: 0px;
-    height: auto;
-    width: auto;
+    margin-top: 0%;
+    margin-left: -1%;
+    height: 10%;
+    width: 1%;
 }
 .time{
     float: right;
     text-align-last: right;
 }
-
 .home{
     height: 60px;
     width: 60px;
-    margin-left: 100px;
+    margin-left: 10%;
     
 }
 .sap{
@@ -89,74 +93,10 @@
 .bottom{
     border: 1px solid black;
     margin-top: 20px;
-
 }
 .ab{
     float: left;
     text-decoration: underline;
-}
-.form3{
-    width: 700px;
-    height: auto;
-    margin-left: 200px;
-    margin-top: 4px;
-    box-shadow: 1px 10px 16px #888888;
-    
-}
-#ttl{
-    display: inline-block;
-    height: 50px;
-    width: 50px;
-    margin-top: 5px;
-    margin-left: 20px;
-    border-radius: 50%;
-}
-#mn{
-    display: inline-block;
-    float: right;
-    width: 35px;
-    height: 35px;
-    margin-left:100px;
-    margin-top:10px;
-    
-}
-#lp{
-    height: 25px;
-    width: 30px;
-    margin-left: 0px;
-    margin-top: 5px;
-}
-#comt{
-    height: 25px;
-    width: 30px;
-}
-#dr{
-    display:inline-block;
-    height: 25px;
-    width: 30px;
-}    
-#tag{
-    display:inline-block;
-    height: 25px;
-    width: 25px;
-    float: right;
-    margin-right: 20px;
-}
-#text{
-    margin-top: 0px;
-}
-.form6{
-    width: auto;
-    height: auto;
-    margin-left: 10px;
-    margin-bottom: 50px;
-}
-#dog{
-    display: inline-block;
-    height: 500px;
-    width: 650px;
-    margin-top: 10px;
-    margin-left: 10px;
 }
 .comtbox{
     
@@ -176,7 +116,63 @@
     margin: 0;
     padding: 0;
 }
+.but{
+    margin-top: 1%;
+    width: 7%;
+    height: 5%;
+    margin-bottom: 2%;
+    }
+.signinfull{
 
-.last{
+    background-repeat: no-repeat;
+    background-image: url(/img/background.JPG );
+    background-size: contain;
+    background-position: center;
+	width: 80%;
+
+	margin-top: 3%;
+	align-content: center;
+    display: block;
     
+    align-items: stretch;
+    
+}
+
+.con {
+	color: #98999b;
+
+}
+.form-3{
+	width: 100px;
+	height: 25px;
+	font-size: 15px;
+	margin-top: 5px;
+	
+	margin-left: 850px;
+	margin-bottom: 1px;
+    
+    
+}
+.form-4{
+	width: 180%;
+	height: 125%;
+	font-size: 15px;
+	margin-top: 5px;
+	margin-bottom: 1px;
+
+}
+.form-5{
+	color: #689af2;
+	height: 50px;
+	width: 100%;
+	font-size: 18px;
+	margin-top: 0%;
+
+	margin-bottom: 1%;
+	border: 1px ;
+
+}
+.form-6{
+	color: #c6cad1;
+	text-align: right;
 }

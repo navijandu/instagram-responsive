@@ -24,13 +24,10 @@
                     //jQuery provides a nice convenience method for easily sending a post with parameters in JSON
                     //here we pass the ID to the incrLike route on the server side so it can do the incrementing for us
                     //note the return. This MUST be here, or the subsequent then will not wait for this to complete
-                    
                     return $.post('incrLike', {id : id});
                 })
                 .then(function(like){
-                    
-                    //if (like.count > 0)
-                    
+                    if (like.count > 0)
                         //jQuery provides a nice convenience methot for easily setting the count to the value returned
                         $('#like' + like.id).html(like.count);
                 })
@@ -82,7 +79,8 @@
                         var likeString = '';
                         if (post.isLiked)
                             likeString = 'I liked this';
- //jQuery function to append to the innterHTML of the div with id = 'posts'
+                            
+                //jQuery function to append to the innterHTML of the div with id = 'posts'
                         
                         var html =  '<div class="container full">';
                             html +='    <div class="row">';
@@ -97,14 +95,19 @@
                             html +='        </div>';
                             html +='    <div class="col-sm-12 text-center">';
                             html +='        <img src="'+post.image+'" class="img-responsive">';
+                            
                             html +='    </div>';
+                            
                             html +='    <div class="col-xs-12 col-sm-12 col-md-12">';
+                            
                             html +='        <div class="row">';
-                            html +="            <likes id ='like" + post._id + "'>"+post.likeCount+"</likes>";
-                            html +='    <div class="col-xs-2 col-sm-2 col-md-2">';
+                            
+                            html +="          <div class='col-xs-12 col-sm-12 col-md-12'><likes id ='like" + post._id + "'>"+post.likeCount+"</likes><b>   Likes</b></div>";
+                        
+                            html +='    <div class="col-xs-1 col-sm-2 col-md-2 but">';
                             html +='        <img src="img/likepic.JPG" class="img-responsive" onclick="likeClick(\'' + post._id + '\');">';
                             html +='    </div>';
-                            html +='    <div class="col-xs-2 col-sm-2 col-md-2">';
+                            html +='    <div class="col-xs-2 col-sm-2 col-md-2 but">';
                             html +='        <img src="img/comment.JPG" class="img-responsive">';
                             html +='    </div>';
                             html +='    </div>';
@@ -113,40 +116,18 @@
                             html +='  <li><b>nadine_locallux</b> Nice Click Bro .. Keep it up ..</li>';
                             html +='  <li><b>Nav-</b>Very awosam ghaint </li>';
                             html +='    </ul>';
+                            
+                            
                             html +='    </div>';
                             html +='        <div class="col-xs-12 col-sm-12 ">';
-                            html +='            <input type="text" name="FirstName" value="Add a comment" class="comt">';
+                            html +='            <input type="text" placeholder="Add a comment" value="" class="comt">';
+                            html +='';
                             html +='        </div>';
                             html +='    </div>';
                             html +='</div>';
                             html +='</div>';
-                       
-        
-                    /*var html ='<div class="form3">';
-                        html +='<img src="img/fb.jpg" id="ttl">';
-                        html +='<img src="img/menu.JPG" id="mn">';
-            
-                        html +='<div class="form6">'; 
-                        html +='    <img src="'+post.image+'" id="dog">';
-                        html +='</div>';
-                        html +='<div class="like-counter">';
-                        html +="    <likes id ='like" + post._id + "'>"+post.likeCount+"</likes>";
-                        html +='</div>';
-                        html +='    <img src="img/likepic.JPG" id="lp" onclick="likeClick(\'' + post._id + '\');">';
-                        html +='    <img src="img/comment.JPG" id="comt">';
-                        html +='    <img src="img/dr.JPG" id="dr">';
-                        html +='    <img src="img/tag.JPG" id="tag">';
-                        html +='    <img src="" id="text">';
-                        html +='<div>';
-                        html +='    <ul class="a">';
-                        html +='  <li><b>nadine_locallux</b> Im already missing these monkeys more than words! #missyouguys #roadtrip #eastcoast #seeyousoon</li>';
-                        html +='  <li><b>Nav-</b>nice click bro </li>';
-                        
-                        html +='</ul>';
-                        html +='</div>';
-                        html +='    <textarea aria-label="Add a comment…" class="comtbox" placeholder="Add a comment…" style="height: 18px;"></textarea>';
-                        html +='  </div>';*/
-                            
+                      
+                     
                         $('#posts').append(html);
                     });
                 })
@@ -155,38 +136,89 @@
                     console.log(err);
                 });
             }
+            
+             //upload picture handler
+            function uploadClick(){
+                //go get the data from the form
+                var form = new FormData($("#uploadForm")[0]);
+                //we can post this way as well as $.post
+                $.ajax({
+                        url: '/upload',
+                        method: "POST",
+                        dataType: 'json',
+                        //the form object is the data
+                        data: form,
+                        //we want to send it untouched, so this needs to be false
+                        processData: false,
+                        contentType: false,
+                        //add a message 
+                        success: function(result){},
+                        error: function(er){}
+                });            
+            }
+            
+            
         </script>
     </head>
     <!-- add the onload event handler to the body tag -->
     <body onload="onload();">
+        
     <div class="container">
         <div class="row top">
-            <div class="col-xs-1 col-sm-1 ">
-                <img src="img/capture.JPG">
+            <div class="col-xs-2 col-sm-1 col-md-1">
+            <a href="https://www.instagram.com/"><img src="img/capture.JPG"></a>
             </div>
             <div class="col-xs-1 col-sm-1 col-xs-1" style="background: white; height: 35px; border-left: 1px solid #6b6c6d">
             </div>
-        <div class="col-xs-3 col-sm-3">
-                <img src="img/instalogo.jpg" id="insta">
+        <div class="col-xs-3 col-sm-3 col-md-3">
+            <img src="img/instalogo.jpg" id="insta">
             </div>
             
-            <div class="col-xs-3 col-sm-3 serch">
-                <input type="text" name="FirstName" value="Search">
-            </div>
+            <div class=" container col-xs-5 col-sm-3 col-md-3">
+                
+          <!-- Trigger the modal with a button -->
+          <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add New Post</button>
+        
+          <!-- Modal -->
+          <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
             
-            <div class="col-xs-4 col-sm-4 col-md-4">
-                <img src="img/top1.JPG">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Add a Picture</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="uploadForm" enctype="multipart/form-data" name="uploadForm" novalidate>
+                        <input type="file" name="userPhoto" id="userPhoto" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal" onclick="uploadClick();">Send</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+            
+            <div class="col-xs-6 col-sm-3 col-md-3">
+               <a href="https://www.instagram.com/explore/people/"> <img src="img/top1.JPG"></a>
                 <img src="img/top2.JPG">
-                <img src="img/top3.JPG">
+               <a href="https://www.instagram.com/ashmeet.navi/"><img src="img/top3.JPG"></a>
+                <a href="https://instaresponsive-navijandu.c9users.io"><button type="button" class="">Sign Out</button></a>
+               
                 
             </div>
       </div>   
     </div>
-    <hr id="line">
+    <hr id="linetop">
         <!-- create a div with an id to give us an anchor point to let the javascript do its work -->
         <div id="posts"></div>
-        <hr id="line">
+        <hr id="linelast">
+        
         <div class="container last">
+        
             <div class="row">
                 <div class="col-xs-1 col-sm-1 col-md-1 home">
                     <img src="img/home.JPG"     class="img-responsive">

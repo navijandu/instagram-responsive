@@ -1,7 +1,4 @@
-  //
-// # SimplestServer
-//
-// by Rick Kozak
+//connection to Mlab 
 
 const dbUrl ='mongodb://ashmeet:navi@ds145302.mlab.com:45302/instagram-responsive';
 
@@ -11,6 +8,8 @@ const path = require('path');
 //express related
 const express = require('express');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
+const Guid = require('guid');
 //session
 const session = require('express-session');  
 const mongoSession = require('connect-mongodb-session')(session);
@@ -27,7 +26,6 @@ const PasswordReset = require('./models/PasswordReset.js');
 const email = require('./utils/sendmail.js');
 
 //email.send('prog8165@gmail.com', 'test', 'this is a test');
-
 //
 // ## SimpleServer `SimpleServer(obj)`
 //
@@ -62,6 +60,8 @@ router.use(session({
 router.use(passport.initialize());
 router.use(passport.session());
 userAuth.init(passport);
+//add file upload support
+router.use(fileUpload());
 
 //tell the router how to handle a get request to the root 
 router.get('/', function(req, res){
@@ -87,7 +87,7 @@ router.post('/signin', function(req, res, next) {
       res.json({isValid: false, message: 'internal error'});
     } else if (!user) {
       //if no user, say invalid login
-      res.json({isValid: false, message: 'try again'});
+      res.json({isValid: false, message: '<b>Username OR Password incorrect <br>Please Try Again'});
     } else {
       //log this user in
       req.logIn(user, function(err){
@@ -126,7 +126,8 @@ router.post('/join', function(req, res, next) {
 
 router.get('/passwordreset', (req, res) => {
   console.log('client requests passwordreset');
-  res.sendFile(path.join(__dirname, 'client/view', 'passwordreset.html'));
+  res.sendfile(path.join(__dirname, 'client/view','passwordreset.html'));
+  // CN  res.sendFile(path.join(__dirname, 'client/view', 'passwordreset.html'));
 });
 
 router.post('/passwordreset', (req, res) => {
@@ -245,6 +246,68 @@ router.post('/incrLike', userAuth.isAuthenticated, function(req, res){
     console.log(err);
   })
 });
+
+//tell the router how to handle a post request to upload a file
+router.post('/upload', userAuth.isAuthenticated, function(req, res) {
+  var response = {success: false, message: ''};
+  
+  if (req.files){
+    // The name of the input field is used to retrieve the uploaded file 
+    var userPhoto = req.files.userPhoto;
+    //invent a unique file name so no conflicts with any other files
+    var guid = Guid.create();
+    //figure out what extension to apply to the file
+    var extension = '';
+    switch(userPhoto.mimetype){
+      case 'image/jpeg':
+        extension = '.jpg';
+        break;
+      case 'image/png':
+        extension = '.png';
+        break;
+      case 'image/bmp':
+        extension = '.bmp';
+        break;
+      case 'image/gif':
+        extension = '.gif';
+        break;
+    }
+    
+    //if we have an extension, it is a file type we will accept
+    if (extension){
+      //construct the file name
+      var filename = guid + extension;
+      // Use the mv() method to place the file somewhere on your server 
+      userPhoto.mv('./client/img/' + filename, function(err) {
+        //if no error
+        if (!err){
+          //create a post for this image
+          var post = new Post();
+          post.userId = req.user.id;
+          post.image = './img/' + filename;
+          post.likeCount = 0;
+          post.comment = '';
+          post.feedbackCount = 0;
+          //save it
+          post.save()
+          .then(function(){
+            res.json({success: true, message: 'all good'});            
+          })
+        } else {
+          response.message = 'internal error';
+          res.json(response);
+        }
+      });
+    } else {
+      response.message = 'unsupported file type';
+      res.json(response);
+    }
+  } else {
+    response.message = 'no files';
+    res.json(response);
+  }
+});
+
 //set up the HTTP server and start it running
 server.listen(process.env.PORT || 3000, process.env.IP || '0.0.0.0', function(){
   var addr = server.address();
